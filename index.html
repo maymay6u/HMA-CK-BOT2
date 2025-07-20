@@ -4,53 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CK Lottery AI Predictor</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #000;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 28px;
-      font-weight: bold;
-    }
-    input {
-      padding: 10px;
-      font-size: 18px;
-      width: 120px;
-      margin: 10px;
-      border-radius: 10px;
-      border: none;
-      text-align: center;
-    }
-    button {
-      background-color: #00cc66;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    #result {
-      font-size: 24px;
-      margin-top: 20px;
-      color: #00ffff;
-    }
-    .footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 14px;
-      color: lightgreen;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>CK Lottery AI Predictor</h1>
@@ -63,39 +17,6 @@
 
   <div class="footer">Powered by Htetmyat</div>
 
-  <script>
-    // Decompiled Logic & Observed Pattern
-    const predictionLogic = {
-      0: [0, 4, 7],
-      1: [3, 6, 9],
-      2: [5, 6, 8],
-      3: [1, 4, 7],
-      4: [0, 5, 8],
-      5: [0, 3, 9],
-      6: [2, 4, 7],
-      7: [0, 2, 5],
-      8: [3, 6, 9],
-      9: [1, 4, 6]
-    };
-
-    function predict() {
-      const input = parseInt(document.getElementById("singleInput").value);
-      const resultDiv = document.getElementById("result");
-
-      if (isNaN(input) || input < 0 || input > 9) {
-        resultDiv.innerHTML = "❌ 0 ကနေ 9 ကြားထည့်ပါ";
-        return;
-      }
-
-      const possible = predictionLogic[input];
-      const prediction = possible[Math.floor(Math.random() * possible.length)];
-
-      resultDiv.innerHTML = `
-        <p>🎯 <b>${input}</b> နောက်ထပ်ကျနိုင်တာတွေ:</p>
-        <b style="font-size: 30px;">${possible.join(" | ")}</b><br/>
-        🔮 မှန်နိုင်ဆုံး: <span style="color:#00ff00; font-size:28px;"><b>${prediction}</b></span>
-      `;
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
