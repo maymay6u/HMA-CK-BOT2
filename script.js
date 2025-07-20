@@ -1,39 +1,41 @@
-let history = [];
+<script>
+  let history = [];
 
-function submitNumber() {
-  const input = document.getElementById("inputNumber").value;
-  const num = parseInt(input);
+  function submitNumber() {
+    const input = document.getElementById("inputNumber").value;
+    const num = parseInt(input);
+    if (isNaN(num) || num < 0 || num > 9) {
+      alert("Please enter a valid number between 0 and 9.");
+      return;
+    }
 
-  if (isNaN(num) || num < 0 || num > 9) {
-    alert("Please enter a valid number between 0 and 9.");
-    return;
+    history.push(num);
+    if (history.length > 50) history.shift(); // recent 50 numbers
+
+    predictNext();
   }
 
-  history.push(num);
-  if (history.length > 300) history.shift();
-  predictNext();
-}
+  function predictNext() {
+    if (history.length < 10) {
+      document.getElementById("predictionOutput").textContent = "Please enter at least 10 numbers";
+      document.getElementById("predictionLogic").textContent = "";
+      return;
+    }
 
-function predictNext() {
-  const big = history.filter(n => n >= 5).length;
-  const small = history.filter(n => n < 5).length;
-  const total = history.length;
+    const freq = new Array(10).fill(0);
+    for (const n of history) {
+      freq[n]++;
+    }
 
-  let prediction = "";
-  let logic = "";
+    // Find the least frequent number = most likely to appear next
+    let minFreq = Math.min(...freq);
+    let candidates = freq
+      .map((f, idx) => (f === minFreq ? idx : null))
+      .filter(v => v !== null);
 
-  if (big / total > 0.6) {
-    prediction = "Small";
-    logic = `Big (${big}) > Small (${small}) → ⬇ Likely to drop → Small`;
-  } else if (small / total > 0.6) {
-    prediction = "Big";
-    logic = `Small (${small}) > Big (${big}) → ⬆ Likely to rise → Big`;
-  } else {
-    const rand = Math.random() > 0.5 ? "Big" : "Small";
-    prediction = rand;
-    logic = `Balanced trend → Random shift → ${rand}`;
+    const predicted = candidates[Math.floor(Math.random() * candidates.length)];
+
+    document.getElementById("predictionOutput").textContent = `Prediction: ${predicted}`;
+    document.getElementById("predictionLogic").textContent = `Least frequent in last ${history.length} draws → Likely to appear: ${candidates.join(', ')}`;
   }
-
-  document.getElementById("predictionOutput").textContent = `Prediction: ${prediction}`;
-  document.getElementById("predictionLogic").textContent = logic;
-}
+</script>
