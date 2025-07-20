@@ -1,41 +1,31 @@
-<script>
-  let history = [];
+const predictionLogic = {
+  0: [0, 4, 7],
+  1: [3, 6, 9],
+  2: [5, 6, 8],
+  3: [1, 4, 7],
+  4: [0, 5, 8],
+  5: [0, 3, 9],
+  6: [2, 4, 7],
+  7: [0, 2, 5],
+  8: [3, 6, 9],
+  9: [1, 4, 6]
+};
 
-  function submitNumber() {
-    const input = document.getElementById("inputNumber").value;
-    const num = parseInt(input);
-    if (isNaN(num) || num < 0 || num > 9) {
-      alert("Please enter a valid number between 0 and 9.");
-      return;
-    }
+function predict() {
+  const input = parseInt(document.getElementById("singleInput").value);
+  const resultDiv = document.getElementById("result");
 
-    history.push(num);
-    if (history.length > 50) history.shift(); // recent 50 numbers
-
-    predictNext();
+  if (isNaN(input) || input < 0 || input > 9) {
+    resultDiv.innerHTML = "❌ 0 ကနေ 9 ကြားထည့်ပါ";
+    return;
   }
 
-  function predictNext() {
-    if (history.length < 10) {
-      document.getElementById("predictionOutput").textContent = "Please enter at least 10 numbers";
-      document.getElementById("predictionLogic").textContent = "";
-      return;
-    }
+  const possible = predictionLogic[input];
+  const prediction = possible[Math.floor(Math.random() * possible.length)];
 
-    const freq = new Array(10).fill(0);
-    for (const n of history) {
-      freq[n]++;
-    }
-
-    // Find the least frequent number = most likely to appear next
-    let minFreq = Math.min(...freq);
-    let candidates = freq
-      .map((f, idx) => (f === minFreq ? idx : null))
-      .filter(v => v !== null);
-
-    const predicted = candidates[Math.floor(Math.random() * candidates.length)];
-
-    document.getElementById("predictionOutput").textContent = `Prediction: ${predicted}`;
-    document.getElementById("predictionLogic").textContent = `Least frequent in last ${history.length} draws → Likely to appear: ${candidates.join(', ')}`;
-  }
-</script>
+  resultDiv.innerHTML = `
+    <p>🎯 <b>${input}</b> နောက်ထပ်ကျနိုင်တာတွေ:</p>
+    <b style="font-size: 30px;">${possible.join(" | ")}</b><br/>
+    🔮 မှန်နိုင်ဆုံး: <span style="color:#00ff00; font-size:28px;"><b>${prediction}</b></span>
+  `;
+}
