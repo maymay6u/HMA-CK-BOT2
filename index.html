@@ -1,22 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CK Lottery AI Predictor</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CK AI Prediction</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding-top: 40px;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #9b59b6;
+      margin-bottom: 10px;
+    }
+    .period {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+    .time {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .prediction-box {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border: 1px solid #444;
+    }
+    .prediction-label {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+    .prediction-result {
+      font-size: 32px;
+      font-weight: bold;
+      padding: 10px 0;
+      border-radius: 8px;
+    }
+    .big {
+      background: #27ae60;
+      color: white;
+    }
+    .small {
+      background: #e74c3c;
+      color: white;
+    }
+    .footer {
+      font-size: 12px;
+      color: #555;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-  <h1>CK Lottery AI Predictor</h1>
-  <p>နောက်ထပ်ကျလာနိုင်တဲ့ဂဏန်း (Decompiled Logic)</p>
+  <div class="container">
+    <div class="logo">CK AI PREDICTION</div>
+    <div class="period" id="period">Period: Loading...</div>
+    <div class="time" id="time">Time: --:--:--</div><div class="prediction-box">
+  <div class="prediction-label">AI Prediction</div>
+  <div class="prediction-result" id="result">...</div>
+</div>
 
-  <input type="number" id="singleInput" placeholder="ဥပမာ - 5" min="0" max="9"/>
-  <button onclick="predict()">ခန့်မှန်းမည်</button>
+<div class="footer">CRD BY YOU</div>
 
-  <div id="result"></div>
+  </div>  <script>
+    function updateTime() {
+      const now = new Date();
+      const hour = now.getHours().toString().padStart(2, '0');
+      const min = now.getMinutes().toString().padStart(2, '0');
+      const sec = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('time').innerText = `Time: ${hour}:${min}:${sec}`;
+    }
 
-  <div class="footer">Powered by Htetmyat</div>
+    async function fetchPrediction() {
+      const a = Math.floor(Math.random() * 10);
+      const b = Math.floor(Math.random() * 10);
+      const c = Math.floor(Math.random() * 10);
 
-  <script src="script.js"></script>
-</body>
+      const res = await fetch("https://your-api-url/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ a, b, c })
+      });
+
+      const data = await res.json();
+      document.getElementById("period").innerText = `Period: ${data.period}`;
+
+      const resultEl = document.getElementById("result");
+      resultEl.innerText = data.prediction;
+      resultEl.className = `prediction-result ${data.prediction.toLowerCase()}`;
+    }
+
+    // Update time every second
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Refresh prediction every 30 sec
+    fetchPrediction();
+    setInterval(fetchPrediction, 30000);
+  </script></body>
 </html>
